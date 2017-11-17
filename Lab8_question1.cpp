@@ -1,83 +1,109 @@
 #include <iostream>
 using namespace std;
-
-struct node
+class node
 {
-	int data;
-	node *next;
+  public:
+   int number;
+   node *next;
 };
-class linkedList
-{private:
-node *head, *tail;
-public :
-linkedList()
-{ head=NULL;
-  tail=NULL;}
-void addNode(int n)
-{node *tmp = new node;
-tmp->data=n;
-tmp->next=NULL;
-
-if(head==NULL)
-{ head=tmp;
-  tail=tmp;}
-else
+bool Empty(node *head);
+void add_node(node *&head,node *&tail,int number);
+void insert_node(node *&head,node *&tail,int number);
+void delete_node(node *&head,node *&tail);
+void display(node*ak);
+bool Empty(node *head)
 {
-	tail->next=tmp;
-	tail= tail->next;
+    if(head == NULL)
+     return true;
+    else
+     return false;
 }
-}
-};
-int main() {
-	linkedList a;
-	a.addNode(3);
-	a.addNode(4);
-#include <iostream>
-using namespace std;
-
-struct node
+void add_node(node*&head,node*&tail,int number)
 {
-	int data;
-	node *next;
-};
-class linkedList
-{private:
-node *head, *tail;
-public :
-linkedList()
-{ head=NULL;
-  tail=NULL;}
-void addNode(int n)
-{node *tmp = new node;
-tmp->data=n;
-tmp->next=NULL;
+    node *temp = new node;
+    temp->number = number;
+    temp->next = NULL;
+    head = temp;
+    tail = temp;
 
-if(head==NULL)
-{ head=tmp;
-  tail=tmp;}
-else
+}
+void insert_node(node*&head,node*&tail,int number)
 {
-	tail->next=tmp;
-	tail= tmp;
+    if(Empty(head))
+     add_node(head,tail,number);
+    else
+    {
+     node*temp = new node;
+     temp->number = number;
+     temp->next = NULL;
+     tail->next=temp;
+     tail=temp;
+    }
 }
+void delete_node(node *&head,node*&tail)
+{
+    if(Empty(head))
+      cout<<"The list is already empty."<<endl;
+    else if(head == tail)
+    {
+      delete head;
+      head = NULL;
+      tail = NULL;
+    }
+    else
+    {
+      node *temp = head;
+      head = head->next;
+      delete temp;
+    }
 }
-void displayList()
-{ if (head==NULL)
-cout<<"The linked list is empty";
-  else
- { node *tmp= head;
-  while(tmp!=NULL)
-  {cout<<tmp->data<<" ";
-    tmp=tmp->next;
-  	
-  }
-  }
+void display(node*ak)
+{
+    if(Empty(ak))
+     cout<<"The list is already empty."<<endl;
+    else
+    {
+        cout<<"List is : \n";
+        while(ak !=NULL)
+        {
+            cout<<ak->number<<endl;
+            ak = ak->next;
+        }
+    }
+
 }
-};
-int main() {
-	linkedList a;
-	a.addNode(3);
-	a.addNode(4);
-	a.displayList();
-		return 0;
+char menu()
+{
+  char ch;
+  cout<<"Menu \n";
+  cout<<"1.Add a item : \n";
+  cout<<"2.Delete a item : \n";
+  cout<<"3.Show athe list : \n";
+  cout<<"4.Exit. \n";
+  cin>>ch;
+  return ch;
+}
+int main()
+{
+  node*head=NULL;
+  node*tail=NULL;
+  char ch;
+  int num;
+  do
+  {
+      ch = menu();
+      switch(ch)
+      {
+        case '1': cout<<"Enter a number : ";
+                  cin>>num;
+                  insert_node(head,tail,num);
+                  break;
+        case '2': delete(head,tail);
+                  break;
+        case '3': display(head);
+                  break;
+        default: cout<<"Exit \n ";
+      }
+  }while(ch!='4');
+  return 0;
 }
